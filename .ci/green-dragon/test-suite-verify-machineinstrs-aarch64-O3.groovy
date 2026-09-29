@@ -7,7 +7,7 @@ library identifier: "zorg-shared-lib@${branchName}",
             credentialsId: scm.userRemoteConfigs[0].credentialsId
         ])
 
-common.testsuite_pipeline(label: 'macos-x86_64') {
+common.testsuite_pipeline(label: 'macos-arm64-xcode-27') {
     sh """
 CMAKE_FLAGS+=" -C ../config/tasks/cmake/caches/target-arm64-iphoneos.cmake"
 CMAKE_FLAGS+=" -C ../config/tasks/cmake/caches/opt-O3.cmake"
