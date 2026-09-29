@@ -4,20 +4,22 @@ properties([
     disableConcurrentBuilds()
 ])
 
-library identifier: "zorg-shared-lib@${branchName}",
+library identifier: "zorg-shared-lib@dwang/migrate-to-macos-arm64-xcode-27-test",
         retriever: modernSCM([
             $class: 'GitSCMSource',
-            remote: "https://github.com/llvm/llvm-zorg.git",
+            remote: "https://github.com/duow310/llvm-zorg.git",
             credentialsId: scm.userRemoteConfigs[0].credentialsId
         ])
 
 jobs = [
-    "llvm.org/test-suite-verify-machineinstrs-x86_64-O0-g",
-    "llvm.org/test-suite-verify-machineinstrs-x86_64-O3",
-    "llvm.org/test-suite-verify-machineinstrs-x86_64h-O3",
-    "llvm.org/test-suite-verify-machineinstrs-aarch64-globalisel-O0-g",
-    "llvm.org/test-suite-verify-machineinstrs-aarch64-O0-g",
-    "llvm.org/test-suite-verify-machineinstrs-aarch64-O3"
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-x86_64-O0-g-apple-silicon",
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-x86_64-O3-apple-silicon",
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-x86_64h-O3-apple-silicon",
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-aarch64-globalisel-O0-g-apple-silicon",
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-aarch64-O0-g-apple-silicon",
+    "Green-Dragon-Testing/test-suite-verify-machineinstrs-aarch64-O3-apple-silicon"
 ]
 
-relay.pipeline jobs
+// TEST ONLY: Read the last good build of the clang-stage1-RA-apple-silicon copy.
+relay.pipeline(jobs, 'Green-Dragon-Testing/clang-stage1-RA-apple-silicon/latest',
+               'Green-Dragon-Testing/clang-stage1-RA-apple-silicon/last_good_build.properties')
