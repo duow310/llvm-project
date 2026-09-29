@@ -1,15 +1,17 @@
 branchName = 'main'
 
-library identifier: "zorg-shared-lib@${branchName}",
+library identifier: "zorg-shared-lib@dwang/migrate-to-macos-arm64-xcode-27-test",
         retriever: modernSCM([
             $class: 'GitSCMSource',
-            remote: "https://github.com/llvm/llvm-zorg.git",
+            remote: "https://github.com/duow310/llvm-zorg.git",
             credentialsId: scm.userRemoteConfigs[0].credentialsId
         ])
 
 clangPipeline(
     jobName: env.JOB_NAME,
     zorgBranch: branchName,
+    testSourceBranch: 'release/23.x',
+    testPollSpec: 'H H/4 * * *',
     buildConfig: [
         stage: 1,
         build_type: 'cmake',
@@ -27,11 +29,5 @@ clangPipeline(
         junit_patterns: [
             "clang-build/**/testresults.xunit.xml"
         ]
-    ],
-    triggeredJobs: [
-        'llvm.org/clang-stage2-cmake-RgSan_relay',
-        'llvm.org/clang-stage2-Rthinlto_relay',
-        'llvm.org/relay-lnt-ctmark',
-        'llvm.org/relay-test-suite-verify-machineinstrs'
     ]
 )
