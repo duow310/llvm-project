@@ -4,13 +4,15 @@ properties([
     disableConcurrentBuilds()
 ])
 
-library identifier: "zorg-shared-lib@${branchName}",
+library identifier: "zorg-shared-lib@dwang/migrate-to-macos-arm64-xcode-27-test",
         retriever: modernSCM([
             $class: 'GitSCMSource',
-            remote: "https://github.com/llvm/llvm-zorg.git",
+            remote: "https://github.com/duow310/llvm-zorg.git",
             credentialsId: scm.userRemoteConfigs[0].credentialsId
         ])
 
+// TEST ONLY: Read the last good build of the clang-stage1-RA-apple-silicon copy.
 relay.pipeline([
-    "llvm.org/clang-stage2-Rthinlto"
-])
+    "Green-Dragon-Testing/clang-stage2-Rthinlto-apple-silicon"
+], 'Green-Dragon-Testing/clang-stage1-RA-apple-silicon/latest',
+   'Green-Dragon-Testing/clang-stage1-RA-apple-silicon/last_good_build.properties')
