@@ -22,6 +22,11 @@ clangPipeline(
         skipTrigger: env.BRANCH_NAME?.startsWith('release/') ?: false
     ],
     testConfig: [
+        // Workaround for rdar://187125524: Do not time out the GPU arch detection
+        // tools (e.g. nvptx-arch) under load.
+        env_vars: [
+            "CLANG_TOOLCHAIN_PROGRAM_TIMEOUT": "0"
+        ],
         test_type: 'testlong',
         timeout: 120,
         junit_patterns: [

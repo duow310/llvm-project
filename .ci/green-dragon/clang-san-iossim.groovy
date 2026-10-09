@@ -26,7 +26,10 @@ clangPipeline(
     testConfig: [
         timeout: 90,
         env_vars: [
-            "SANITIZER_IOSSIM_TEST_DEVICE_IDENTIFIER": "iPhone 15"
+            "SANITIZER_IOSSIM_TEST_DEVICE_IDENTIFIER": "iPhone 15",
+            // Workaround for rdar://187125524: Do not time out the GPU arch
+            // detection tools (e.g. nvptx-arch) under load.
+            "CLANG_TOOLCHAIN_PROGRAM_TIMEOUT": "0"
         ],
         custom_script: '''
             EXIT_CODE=0

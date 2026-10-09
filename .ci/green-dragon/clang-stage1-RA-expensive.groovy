@@ -25,6 +25,11 @@ clangPipeline(
             "-DLIBCXX_ENABLE_STATIC=OFF",
             "-DLIBCXX_INCLUDE_TESTS=OFF",
             "-DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=OFF"
+        ],
+        // Workaround for rdar://187125524: Do not time out the GPU arch detection
+        // tools (e.g. nvptx-arch) under load.
+        env_vars: [
+            "CLANG_TOOLCHAIN_PROGRAM_TIMEOUT": "0"
         ]
     ],
     testConfig: [
